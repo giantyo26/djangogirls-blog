@@ -9,6 +9,8 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    
+    dislike = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='disliked_post')
 
     def publish(self):
         self.published_date = timezone.now()
@@ -17,4 +19,8 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-    
+class Likes(models.Model):
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
